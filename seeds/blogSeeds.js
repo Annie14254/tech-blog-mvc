@@ -1,6 +1,6 @@
 const {Blog} = require('../models')
 
-const commentData = [
+const blogData = [
     {   
         title: "Example post",
         content: "Example",

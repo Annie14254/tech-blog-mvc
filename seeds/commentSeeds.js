@@ -5,7 +5,7 @@ const commentData = [
         content: "Example",
         date: "5/10/2023",
         user_id: 1,
-        blog_id: 3
+        blog_id: 2
     },
     {
         content: "Example2",
