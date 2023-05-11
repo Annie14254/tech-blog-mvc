@@ -1,75 +1,61 @@
-const router = require('express').Router();
-const { User } = require('../../models');
+const router = require("express").Router();
+const User = require("../../models/User");
 
-// use following data as FRAMEWORK for assignment
 
-// CREATE new user
-router.post('/', async (req, res) => {
-  try {
-    const dbUserData = await User.create({
-      username: req.body.username,
-      email: req.body.email,
-      password: req.body.password,
-    });
+router.get("/", (req, res) => {
+  User.findAll()
+    .then( resp => res.status(200).json({ status: "success", payload: resp }))
+    .catch( err => res.status(200).json({ msg: err.message }))
+})
 
-    req.session.save(() => {
-      req.session.loggedIn = true;
 
-      res.status(200).json(dbUserData);
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-});
+router.get("/:id", (req, res) => {
+  User.findByPk(req.params.id)
+    .then( resp => res.json({ status: "success", payload: resp }))
+    .catch( err => res.json({ msg: err.message }))
+})
 
-// Login
-router.post('/login', async (req, res) => {
-  try {
-    const dbUserData = await User.findOne({
+
+router.post("/", (req, res) => {
+  User.create(req.body)
+    .then( resp => res.status(200).json({ status: "success", payload: resp }))
+    .catch( err => res.status(200).json({ msg: err.message }))
+})
+
+router.put("/:id", (req, res) => {
+  User.update(
+    req.body,
+    {
       where: {
-        email: req.body.email,
-      },
-    });
-
-    if (!dbUserData) {
-      res
-        .status(400)
-        .json({ message: 'Incorrect email or password. Please try again!' });
-      return;
+        id: req.params.id
+      }
     }
+  )
+    .then( resp => res.status(200).json({ status: "success", payload: resp }))
+    .catch( err => res.status(200).json({ msg: err.message }))
+})
 
-    const validPassword = await dbUserData.checkPassword(req.body.password);
-
-    if (!validPassword) {
-      res
-        .status(400)
-        .json({ message: 'Incorrect email or password. Please try again!' });
-      return;
+router.delete("/:id", (req, res) => {
+  User.destroy({
+    where: {
+      id: req.params.id
     }
+  })
+  .then( resp => res.status(200).json({ status: "success", payload: resp }))
+  .catch( err => res.status(200).json({ msg: err.message }))
+})
 
-    req.session.save(() => {
-      req.session.loggedIn = true;
 
-      res
-        .status(200)
-        .json({ user: dbUserData, message: 'You are now logged in!' });
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-});
+// Here's a route you can use for authenticating a login
+router.post("/login", async (req, res) => {
+  const foundUser = await User.findOne({
+    where: {
+      email: req.body.email
+    }
+  })
+  if( !foundUser ) return res.status(401).json({ status: "error", msg: "No user found" })
+  if( !foundUser.validatePassword(req.body.password) ) return res.status(401).json({ status: "error", msg: "No user found" })
+  return res.status(200).json({ status: "success", payload: foundUser })
+})
 
-// Logout
-router.post('/logout', (req, res) => {
-  if (req.session.loggedIn) {
-    req.session.destroy(() => {
-      res.status(204).end();
-    });
-  } else {
-    res.status(404).end();
-  }
-});
-
-module.exports = router;
+module.exports = router
