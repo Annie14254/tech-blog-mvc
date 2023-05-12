@@ -18,6 +18,7 @@ const loginFormHandler = async (event) => {
         document.location.replace('/dashboard');
         console.log("success")
       } else {
+        console.log(err)
         alert(response.statusText);
       }
     }
