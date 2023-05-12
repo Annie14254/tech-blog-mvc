@@ -1,52 +1,35 @@
-{{#if posts.length}}
-{{!-- if posts are present --}}
-    {{#each posts as |post|}}
-{{/if}}
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Tech Blog</title>
+  <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,400i,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/public/css/style.css">
+</head>
 
-<div class = "row">
-    <div class = "col-auto">
-        <h2>{{username}}'s Dashboard</h2>
-    </div>
-</div>
+<body class="flex-column min-100-vh">
+  <nav class="navbar">
+    <ul class="flex-row">
+      <li class="li-inline nav-item"><a href="/">Home</a></li>
+      <li class="li-inline nav-item"><a href="/dashboard">Dashboard</a></li>
+      <li class="li-inline nav-item"><a href="#" id="logout-link">Logout</a></li>
+    </ul>
+  </nav>
+  <header class="hero">
+    <h1 class="app-title"><a href="/dashboard">{{user.username}} Dashboard</a></h1>
+  </header>
 
-<div class = "row mt-4">
-    <div class = "col-md-6" id = "new-post">
-        <h3>New Post:</h3>
+  <main class="col-auto">
+    {{{body}}}
+  </main>
 
-        <form class = "form">
-            <div class = "form-group">
-                <label for="post-title">Post Title:</label>
-                <input class="form-input" type = "text" id = "post-name" name = "post-name"/>
-            </div>
-            <div class = "form-group">
-                <label for="post-content">Post Content:</label>
-                <input class = "form-input" type = "textarea" id  = "post-content" name = "post-content" />
-            </div>
-            <div class = "form-group">
-                <label for="post-date">Post Date:</label>
-                <input class = "form-input" type = 'date' id = "post-date"  name = "post-date" />
-            </div>
-            <div class = "form-group">
-                <button type = "submit" id = "dashboard-newpost">Add New Post</button>
-            </div>
-        </form>
-    </div>
+  <footer class="footer flex-row justify-center">
+    <a href="/dashboard/new">➕ New Post</a>
+  </footer>
+</body>
 
-    {{#if blog.length}}
-    {{!-- if posts are present --}}
-        {{#each blogs as |blog|}}
-        <div class="row mb-2">
-        <div class="col-md-8">
-            <h4><a href="/project/{{blog.id}}">{{blog.title}}</a></h4>
-        </div>
-        <div class="col-md-4">
-            <button class="btn btn-sm btn-danger" data-id="{{blog.id}}">DELETE</button>
-        </div>
-        </div>
-    {{/if}}
+<script src="/public/js/logout.js"></script>
 
-</div>
-
-
-<script src="../public/js/dashboard.js"></script>
+</html>

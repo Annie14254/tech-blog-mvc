@@ -19,7 +19,11 @@ router.get("/:id", (req, res) => {
 router.post("/", (req, res) => {
   User.create(req.body)
     .then( resp => res.status(200).json({ status: "success", payload: resp }))
-    .catch( err => res.status(200).json({ msg: err.message }))
+    .catch( err => {
+      console.log(err)
+      res.status(200).json({ msg: err.message })
+    })
+
 })
 
 router.put("/:id", (req, res) => {
@@ -54,7 +58,7 @@ router.post("/login", async (req, res) => {
     }
   })
   if( !foundUser ) return res.status(401).json({ status: "error", msg: "No user found" })
-  if( !foundUser.validatePassword(req.body.password) ) return res.status(401).json({ status: "error", msg: "No user found" })
+  if( !foundUser.checkPassword(req.body.password) ) return res.status(401).json({ status: "error", msg: "No user found" })
   return res.status(200).json({ status: "success", payload: foundUser })
 })
 

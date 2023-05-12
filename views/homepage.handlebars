@@ -4,12 +4,12 @@
 
 <!--create similar format with blog context-->
 
-{{#each blogs as |blog|}}
+{{#each blogs}}
 <div>
-    <h2>{{blog.title}}</h2>
-    <h3>By {{blog.user.username}} on {{blog.date}}</h3>
+    <h2>{{title}}</h2>
+    <h3>By {{user.username}} on {{date}}</h3>
 </div>
 <div>
-    <p>{{blog.content}}</p>
+    <p>{{content}}</p>
 </div>
 {{/each}}

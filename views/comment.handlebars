@@ -6,11 +6,11 @@
     <p>{{blog.content}}</p>
 </div>
 
-{{#each comments as |comment|}}
+{{#each comments}}
     <div>
-        <h6>{{comment.user.username}} at {{comment.date}}</h6>
+        <h6>{{user.username}} at {{date}}</h6>
     </div>
     <div>
-        <p>{{comment.content}}</p>
+        <p>{{content}}</p>
     </div>
 {{/each}}
