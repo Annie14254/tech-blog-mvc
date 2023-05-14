@@ -1,52 +1,43 @@
-{{#if posts.length}}
-{{!-- if posts are present --}}
-    {{#each posts as |post|}}
-{{/if}}
+<!DOCTYPE html>
+<html lang="en">
 
+  </nav>
+  <header class="hero">
+    <h1 class="app-title"><a href="/dashboard">Dashboard</a></h1>
+  </header>
 
-<div class = "row">
-    <div class = "col-auto">
-        <h2>{{username}}'s Dashboard</h2>
-    </div>
-</div>
-
-<div class = "row mt-4">
-    <div class = "col-md-6" id = "new-post">
-        <h3>New Post:</h3>
-
-        <form class = "form">
-            <div class = "form-group">
-                <label for="post-title">Post Title:</label>
-                <input class="form-input" type = "text" id = "post-name" name = "post-name"/>
-            </div>
-            <div class = "form-group">
-                <label for="post-content">Post Content:</label>
-                <input class = "form-input" type = "textarea" id  = "post-content" name = "post-content" />
-            </div>
-            <div class = "form-group">
-                <label for="post-date">Post Date:</label>
-                <input class = "form-input" type = 'date' id = "post-date"  name = "post-date" />
-            </div>
-            <div class = "form-group">
-                <button type = "submit" id = "dashboard-newpost">Add New Post</button>
-            </div>
-        </form>
-    </div>
-
-    {{#if blog.length}}
-    {{!-- if posts are present --}}
-        {{#each blogs as |blog|}}
-        <div class="row mb-2">
-        <div class="col-md-8">
-            <h4><a href="/project/{{blog.id}}">{{blog.title}}</a></h4>
+  <main class="col-auto">
+    
+    {{#if blogs.length}}
+      {{#each blogs}}
+        <div class = "card">
+        <div>
+            <h2>{{title}}</h2>
+            <h3>By {{user.username}} on {{date}}</h3>
         </div>
-        <div class="col-md-4">
-            <button class="btn btn-sm btn-danger" data-id="{{blog.id}}">DELETE</button>
+        <div>
+            <p>{{content}}</p>
+        </div>
+        <div>
+            <a href = "/blog/{{id}}" class = "card-link">Post Details</a>
+        </div>
+        <div>
+            <button class = "btn btn-danger" id = "delete-btn">Delete Post</button>
+        </div>
+        <div>
+            <a class = "btn btn-danger" href = '/dashboard/edit'>Edit Post</a>
         </div>
         </div>
+      {{/each}}
     {{/if}}
+  </main>
 
-</div>
+  <footer class="footer flex-row justify-center">
+    <a href="/dashboard/new">➕ New Post</a>
+  </footer>
+</body>
 
+<script src="/js/logout.js"></script>
+<script src="/js/edit.js"></script>
 
-<script src="../public/js/dashboard.js"></script>
+</html>
