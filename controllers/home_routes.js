@@ -43,9 +43,16 @@ router.get('/', async (req, res) => {
   });
 
   router.get('/blog/:id', async (req, res) => {
-    try {
-      const blogData = await Blog.findByPk(req.params.id, {
-        include: [
+    Blog.findOne({
+      where: {
+        id: req.params.id
+      },
+      attributes: [
+        "id", 
+        "content", 
+        "title", 
+        "date"],
+      include: [
           {
             model: Comment,
             attributes: ['id', 'content', 'date', 'user_id', 'blog_id'],
@@ -59,55 +66,25 @@ router.get('/', async (req, res) => {
             attributes: ['username']
           }
         ],
-      });
-  
-      const blog = blogData.get({ plain: true });
-  
-      res.render('blog', {
-        ...blog,
-        logged_in: req.session.logged_in
-      });
-    } catch (err) {
-      res.status(500).json(err);
-    }
+    }).then(blogData => {
+      if(!blogData){
+        res.status(404).json({message: "No blog found with that ID"})
+        return;
+      }
+
+      // res.json(blogData)
+        const blogs =  blogData.get({
+          plain: true
+        });
+        res.render('blog', {
+          blogs,
+          logged_in: true
+        });
+    })
   });
   
   // Use withAuth middleware to prevent access to route
   router.get('/dashboard', withAuth, async (req, res) => {
-    // try {
-    //   // Find the logged in user based on the session ID
-    //   const userData = await User.findByPk(req.session.user_id, {
-    //     attributes: { exclude: ['password'] },
-    //     include: [{ model: Blog }],
-    //   });
-    //   const userBlogs = await Blog.findAll({
-    //     where: {
-    //       user_id: req.session.user_id
-    //     },
-    //     include: [
-    //       {
-    //         model: User,
-    //         attributes: ['username']
-    //       }
-    //     ],
-    //   })
-    //   .then(data => {
-    //     //const user = data.get({ plain: true });
-    //     console.log(req.session)
-    //     const userblogs = data.map(userblog => userblog.get({plain: true}));
-    //     //console.log(user)
-
-    //     res.render('dashboard', {
-    //       //...user,
-    //       userblogs,
-    //       logged_in: true
-    //     });
-    //   })
-
-    // } catch (err) {
-    //   console.log(err)
-    //   res.status(500).send({message: err});
-    // }
     Blog.findAll({
       where: {
         user_id: req.session.user_id

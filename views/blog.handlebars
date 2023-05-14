@@ -1,3 +1,4 @@
+
 <div class = "card">
     <div>
         <h2>{{blogs.title}}</h2>
@@ -8,12 +9,13 @@
     </div>
 </div>
 
+
 <div class = "card">
     <div>
-        {{#each comments}}
-        <div>{{content}}</div>
-        <div>-{{user.username}}</div>
-        {{/each}}
+        {{!-- {{#each comments}} --}}
+        <div>{{comments.content}}</div>
+        <div>-{{comments.user.username}}</div>
+        {{!-- {{/each}} --}}
     </div>
 </div>
 
