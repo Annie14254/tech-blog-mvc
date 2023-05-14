@@ -21,6 +21,12 @@
         <div>
             <a href = "/blog/{{id}}" class = "card-link">Post Details</a>
         </div>
+        <div>
+            <button class = "btn btn-danger" id = "delete-btn">Delete Post</button>
+        </div>
+        <div>
+            <a class = "btn btn-danger" href = '/dashboard/edit'>Edit Post</a>
+        </div>
         </div>
       {{/each}}
     {{/if}}
@@ -32,5 +38,6 @@
 </body>
 
 <script src="/js/logout.js"></script>
+<script src="/js/edit.js"></script>
 
 </html>
