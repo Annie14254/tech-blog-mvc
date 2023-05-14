@@ -28,13 +28,13 @@ router.get('/', async (req, res) => {
       const blogs = blogData.map((blog) => blog.get({ plain: true }));
       console.log( { 
         blogs, 
-        //logged_in: req.session.logged_in 
+        logged_in: req.session.logged_in
       })
   
       // Pass serialized data and session flag into template
       res.render('homepage', { 
         blogs, 
-        //logged_in: req.session.logged_in 
+        logged_in: req.session.logged_in
       });
     } catch (err) {
       console.log(err)
@@ -74,6 +74,82 @@ router.get('/', async (req, res) => {
   
   // Use withAuth middleware to prevent access to route
   router.get('/dashboard', withAuth, async (req, res) => {
+    // try {
+    //   // Find the logged in user based on the session ID
+    //   const userData = await User.findByPk(req.session.user_id, {
+    //     attributes: { exclude: ['password'] },
+    //     include: [{ model: Blog }],
+    //   });
+    //   const userBlogs = await Blog.findAll({
+    //     where: {
+    //       user_id: req.session.user_id
+    //     },
+    //     include: [
+    //       {
+    //         model: User,
+    //         attributes: ['username']
+    //       }
+    //     ],
+    //   })
+    //   .then(data => {
+    //     //const user = data.get({ plain: true });
+    //     console.log(req.session)
+    //     const userblogs = data.map(userblog => userblog.get({plain: true}));
+    //     //console.log(user)
+
+    //     res.render('dashboard', {
+    //       //...user,
+    //       userblogs,
+    //       logged_in: true
+    //     });
+    //   })
+
+    // } catch (err) {
+    //   console.log(err)
+    //   res.status(500).send({message: err});
+    // }
+    Blog.findAll({
+      where: {
+        user_id: req.session.user_id
+      },
+      attributes: [
+        'id',
+        'title',
+        'content',
+        'date'
+      ],
+      include: [
+        {
+          model: Comment,
+          attributes: ['id', 'content', 'date', 'user_id', 'blog_id'],
+          include: {
+              model: User,
+              attributes: ['username']
+          }
+        },
+        {
+          model: User,
+          attributes: ['username']
+        }
+      ],
+    })
+    .then(blogData => {
+      const blogs = blogData.map(blog => blog.get({
+        plain: true
+      }));
+      res.render('dashboard', {
+        blogs,
+        logged_in: true
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err)
+    });
+  });
+  
+  
+  router.get('/dashboard/new', withAuth, async (req, res) => {
     try {
       // Find the logged in user based on the session ID
       const userData = await User.findByPk(req.session.user_id, {
@@ -83,15 +159,16 @@ router.get('/', async (req, res) => {
   
       const user = userData.get({ plain: true });
   
-      res.render('dashboard', {
+      res.render('new', {
         ...user,
         logged_in: true
       });
     } catch (err) {
-      res.status(500).json(err);
+      console.log(err)
+      res.status(500).send({msg: err});
     }
   });
-  
+
   router.get('/login', (req, res) => {
     // If the user is already logged in, redirect the request to another route
     if (req.session.logged_in) {

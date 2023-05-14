@@ -1,15 +1,18 @@
-{{!-- {{#each galleries as |gallery|}}
-{{> gallery-details}}
-{{/each}} --}}
 
-<!--create similar format with blog context-->
+
+
 
 {{#each blogs}}
+<div class = "card">
 <div>
     <h2>{{title}}</h2>
     <h3>By {{user.username}} on {{date}}</h3>
 </div>
 <div>
     <p>{{content}}</p>
+</div>
+<div>
+    <a href = "/blog/{{id}}" class = "card-link">Post Details</a>
+</div>
 </div>
 {{/each}}

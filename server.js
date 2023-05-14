@@ -40,7 +40,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(routes);
 
-const forceValue = (process.env.NODE_ENV === "production") ? false : true
+const forceValue = (process.env.NODE_ENV === "production") ? false : false
 sequelize.sync({ force: forceValue }).then(() => {
   app.listen(PORT, () => console.log('Now listening'));
 });
