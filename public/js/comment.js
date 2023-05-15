@@ -1,13 +1,19 @@
 const commentFormHandler = async function(event) {
   event.preventDefault();
 
-  const body = document.getElementById('comment-body').value;
+  const content = document.getElementById('comment-body').value;
+  const date = document.getElementById('comment-date').value;
+  const blog_id = document.querySelector('.main-card').id
 
-  if (body) {
+  console.log(content, date, blog_id)
+
+  if (content && date) {
     await fetch('/api/comment', {
       method: 'POST',
       body: JSON.stringify({
-        body
+        content,
+        date,
+        blog_id
       }),
       headers: {
         'Content-Type': 'application/json'

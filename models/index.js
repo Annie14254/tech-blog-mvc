@@ -17,7 +17,7 @@ Comment.belongsTo(User, {
 })
 
 Comment.belongsTo(Blog, {
-    foreignKey: "user_id",
+    foreignKey: "blog_id",
 })
 
 Blog.belongsTo(User, {
