@@ -21,7 +21,7 @@ npm install
 ```
 
 ## Usage
-Access the deployed site at (heroku link).
+Access the deployed site [(here)](https://mvc-techblog-aashley.herokuapp.com/).
 
 To run locally:
 - Clone the repository to your local computer.
